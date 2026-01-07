@@ -10,12 +10,14 @@ public record FeedbackReportRequest(
 ) {
     public FeedbackReportRequest {
 
+        OffsetDateTime hoje = OffsetDateTime.now();
+
         if (dataInicio == null) {
-            dataInicio = OffsetDateTime.now();
+            dataInicio = hoje.minusDays(7);
         }
 
         if (dataFim == null) {
-            dataFim = dataInicio.minusDays(7);
+            dataFim = hoje;
         }
 
         if (dataInicio.isAfter(dataFim)) {
