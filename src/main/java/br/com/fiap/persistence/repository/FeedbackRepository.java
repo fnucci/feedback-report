@@ -12,7 +12,7 @@ import java.util.List;
 public class FeedbackRepository implements PanacheRepository<Feedback> {
 
     public List<Feedback> getReportsFromPeriod(FeedbackReportRequest request) {
-        return find("created_at BETWEEN :inicio AND :fim",
+        return find("createdAt BETWEEN :inicio AND :fim",
                 Parameters.with("inicio", request.dataInicio()).and("fim", request.dataFim())).list();
     }
 
