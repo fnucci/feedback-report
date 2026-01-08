@@ -4,27 +4,22 @@ import br.com.fiap.model.dto.FeedbackReportRequest;
 import br.com.fiap.model.dto.FeedbackReportResponse;
 import br.com.fiap.service.FeedbackReportService;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import io.quarkus.arc.Arc;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 
-import java.util.List;
-
-public class FeedbackReportResource implements RequestHandler<FeedbackReportRequest, List<FeedbackReportResponse>> {
+public class FeedbackReportResource implements RequestHandler<FeedbackReportRequest, FeedbackReportResponse> {
 
     @Override
-    public List<FeedbackReportResponse> handleRequest(FeedbackReportRequest request, Context context) {
+    public FeedbackReportResponse handleRequest(FeedbackReportRequest request, Context context) {
+        context.getLogger().log("Processing feedback report request.");
 
-        LambdaLogger logger = context.getLogger();
+        var inst = Arc.container().instance(FeedbackReportService.class);
+        if (!inst.isAvailable()) {
+            throw new IllegalStateException("FeedbackReportService CDI bean not available.");
+        }
 
-        logger.log("Processing feedback reports submission.");
-
-        FeedbackReportService feedbackReportService = Arc.container()
-                .instance(FeedbackReportService.class)
-                .get();
-
-        return feedbackReportService.getReportsFromPeriod(request);
+        var list = inst.get().getReportsFromPeriod(request);
+        return new FeedbackReportResponse(list);
     }
+
 }

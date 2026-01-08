@@ -1,18 +1,21 @@
 package br.com.fiap.presenter;
 
+import br.com.fiap.model.dto.FeedbackReportItem;
 import br.com.fiap.model.dto.FeedbackReportResponse;
 import br.com.fiap.persistence.entity.Feedback;
 
-public class FeedbackPresenter {
+public final class FeedbackPresenter {
+    private FeedbackPresenter() {}
 
-
-    public static FeedbackReportResponse toResponse(Feedback feedback){
-        return new FeedbackReportResponse(
+    public static FeedbackReportItem toItem(Feedback feedback) {
+        return new FeedbackReportItem(
                 feedback.getStudent().getName(),
                 feedback.getCourse().getName(),
                 feedback.getComment(),
                 feedback.getGrade()
+
         );
     }
 }
+
 

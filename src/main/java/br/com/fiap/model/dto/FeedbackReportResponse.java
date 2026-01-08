@@ -1,9 +1,5 @@
 package br.com.fiap.model.dto;
 
-public record FeedbackReportResponse(
-        String nomeAluno,
-        String nomeCurso,
-        String comentario,
-        Short nota
-) {
-}
+import java.util.List;
+
+public record FeedbackReportResponse(List<FeedbackReportItem> reports) {}
